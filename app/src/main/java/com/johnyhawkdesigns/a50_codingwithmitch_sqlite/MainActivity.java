@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void addData(String newEntry){
+
+        //calling addData() method in DatabaseHelper class. Because return type of this method is boolean, we will store this boolean value in a variable.
         boolean insertData = mDatabaseHelper.addData(newEntry);
 
         if (insertData){
@@ -66,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
-     * customizable post
-     * @param message
+    /**
+     *customizable post
+     *@param message
      */
     private void toastMessage(String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
