@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ListDataActivity.class);
-                startActivity(intent);
+                startActivity(intent); //NOTE: Don't forget to add this activity to Manifest file
             }
         });
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    //Add new data to our database
     public void addData(String newEntry){
 
         //calling addData() method in DatabaseHelper class. Because return type of this method is boolean, we will store this boolean value in a variable.

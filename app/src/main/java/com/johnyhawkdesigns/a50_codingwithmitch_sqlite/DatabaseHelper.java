@@ -25,8 +25,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL2_name + " TEXT)";
-        db.execSQL(createTable);
+        String createTableQuery = "CREATE TABLE " + TABLE_NAME + " (" + COL1_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL2_name + " TEXT)";
+        db.execSQL(createTableQuery);
 
     }
 
@@ -39,7 +39,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //This method will store string "item" to our database, the return type is boolean because it will return -1 if data is not inserted.
     public boolean addData(String item){
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2_name, item); //COL2 is "name" and item is data stored against this column.
 
@@ -57,8 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /**
-     * returns all data from database
-     * @return
+     * @return returns all data from database
      */
     public Cursor getData(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -67,4 +65,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    /**
+     *
+     * @param name
+     * @return return only the ID that matches the name passed in
+     */
+    public Cursor getItemID(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + COL1_ID + " FROM " + TABLE_NAME +
+                " WHERE " + COL2_name + " = '" + name + "'";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+
+    /**
+     * Updates the name field
+     * @param newName
+     * New name that needs to be entered
+     * @param id
+     * ID of the item being modified
+     * @param oldName
+     * oldName that needs to be updated
+     */
+    public void updateName(String newName, int id, String oldName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + TABLE_NAME + " SET " + COL2_name +
+                " = '" + newName + "' WHERE " + COL1_ID + " = '" + id + "'" +
+                " AND " + COL2_name + " = '" + oldName + "'";
+
+        //Query Simplified = UPDATE people_table SET name = 'Ahsan' WHERE ID = '1' AND name = 'Ahsaaaaan'
+
+        Log.d(TAG, "updateName: query: " + query);
+        Log.d(TAG, "updateName: Setting name to " + newName);
+        db.execSQL(query);
+    }
+
+    /**
+     * Delete data
+     * @param id
+     * ID of the item being deleted
+     * @param name
+     * oldName that needs to be deleted
+     */
+    public void deleteName(String name, int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "Delete FROM " + TABLE_NAME + " WHERE " +
+                COL1_ID + "= '" + id + "'" +
+                " AND " + COL2_name + " = '" + name + "'";
+
+        Log.d(TAG, "deleteName: query: " + query);
+        Log.d(TAG, "deleteName: Deleting " + name + " from database.");
+        db.execSQL(query);
+    }
+
+
 }
+
+
+
+
+
+
+
